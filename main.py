@@ -99,7 +99,5 @@ def calcular():
         return jsonify({"error": "⚠️ Formato incorrecto, envía un número válido en JSON."}), 400
 
 
-# 🚀 Capturar el puerto correctamente para Railway
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+# 🚀 Configuración para Gunicorn en Railway
+gunicorn_app = app
