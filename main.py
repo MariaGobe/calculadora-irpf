@@ -5,7 +5,6 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# URL oficial de la Agencia Tributaria para el IRPF 2025 (ajústala si cambia)
 PDF_URL = 'https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2025/Cuadro_tipos_retenciones_IRPF2025.pdf'
 
 
@@ -23,7 +22,6 @@ def descargar_y_extraer_tablas():
         for page in doc:
             text += page.get_text()
 
-        # Tramos de IRPF 2025 (ajustar según documento oficial)
         tramos = {
             "12450": 0.19,
             "20200": 0.24,
@@ -52,7 +50,7 @@ def calcular_irpf(salario):
     irpf_total = 0
     salario_restante = salario
 
-    tramos = sorted(tramos_irpf.keys(), key=lambda x: int(x))  # Ordenar por tramos ascendentes
+    tramos = sorted(tramos_irpf.keys(), key=lambda x: int(x))
 
     tramo_anterior = 0
     for tramo in tramos:
@@ -84,9 +82,3 @@ def calcular():
 
     irpf = calcular_irpf(salario)
     return jsonify({"salario": salario, "irpf": irpf})
-
-
-# Configuración para producción en Railway con Gunicorn
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
